@@ -1,0 +1,214 @@
+/* Tools_Vari/React/src/index.css */
+
+/* Keep basic font setup if desired, or remove */
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  /* Text color might need adjustment based on background */
+  /* color: rgba(255, 255, 255, 0.87); */
+  /* Background color will be covered by React Flow */
+  /* background-color: #242424; */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove default body margin/padding */
+body {
+  margin: 0;
+  padding: 0;
+  /* Remove flexbox centering, not needed for full-page canvas */
+  /* display: flex; */
+  /* place-items: center; */
+  /* min-width: 320px; */
+  /* min-height: 100vh;  Let #root handle height */
+}
+
+/* Ensure root takes full space, remove centering */
+#root {
+  width: 100vw;
+  height: 100vh;
+  padding: 0; /* Ensure no padding */
+  margin: 0; /* Ensure no margin */
+  /* Remove text-align and max-width */
+  /* max-width: none; */
+  /* margin: 0 auto; */
+  /* text-align: center; */
+}
+
+/* Remove all other default styles */
+/*
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+*/
+
+/* Base style for ALL nodes - applied before specific class styles */
+.react-flow__node {
+  font-size: 11px; /* Smaller base font size */
+  text-align: center;
+  border-width: 2px; /* Slightly thicker border */
+  border-style: solid;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Subtle shadow */
+  padding: 8px 12px;
+  min-width: 80px; /* Minimum width */
+}
+
+/* Override default node style provided by library */
+.react-flow__node-default,
+.react-flow__node-input,
+.react-flow__node-output {
+  /* Base styles are now in .react-flow__node */
+  /* Remove library defaults if they conflict */
+  background-color: transparent; /* Let inline style handle background */
+  border: none; /* Let inline style handle border color */
+  color: inherit; /* Let inline style handle text color */
+  padding: 0; /* Let .react-flow__node handle padding */
+}
+
+/* --- Specific Node Shapes & Styles --- */
+
+/* Background Nodes */
+.react-flow__node.background-node {
+  z-index: -1; /* Push to background */
+  border-style: dashed;
+  border-width: 1px; /* Thinner border */
+  font-size: 16px; /* Slightly larger label for area */
+  font-weight: bold;
+  text-align: left;
+  padding: 30px 20px 10px 20px; /* Adjust padding for label position */
+  /* Background color/opacity is now set inline via JS for easier modification */
+  /* background-color: rgba(237, 242, 247, 0.6); */ 
+  /* Border color is set inline */
+  /* color (for text) is set inline */
+  pointer-events: none; /* Make background truly non-interactive */
+}
+
+/* Ensure specific nodes have higher z-index than background */
+.react-flow__node.orchestrator-node,
+.react-flow__node.context-node,
+.react-flow__node.agent-node,
+.react-flow__node.tool-node,
+.react-flow__node.external-node,
+.react-flow__node.helper-node,
+.react-flow__node-input,
+.react-flow__node-output {
+  z-index: 1; /* Ensure functional nodes are above background */
+}
+
+/* Orchestrators (Rectangles) */
+.react-flow__node.orchestrator-node {
+  border-radius: 4px;
+}
+
+/* Context/Data (Ovals/Ellipses) */
+.react-flow__node.context-node {
+  border-radius: 50px; /* Oval shape */
+  padding: 10px 20px;
+}
+
+/* Agents (Rounded Rectangles) */
+.react-flow__node.agent-node {
+  border-radius: 10px;
+  padding: 12px 15px;
+}
+
+/* Tools (Hexagons or Circles) - Using Circles for simplicity */
+.react-flow__node.tool-node {
+  border-radius: 50%; /* Circle */
+  width: 90px; /* Fixed size */
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px; /* Add some padding inside circle */
+  box-sizing: border-box; /* Include padding in width/height */
+}
+
+/* External Systems (Parallelograms or Rectangles with different border) */
+.react-flow__node.external-node {
+  border-radius: 4px;
+  border-style: dashed; /* Different border style */
+}
+
+/* Helper Functions (Simple Rectangles, maybe smaller padding) */
+.react-flow__node.helper-node {
+  border-radius: 4px;
+  padding: 6px 10px;
+}
+
+/* Input/Output Nodes - Ensure they get base styles + specific border radius */
+.react-flow__node-input,
+.react-flow__node-output {
+    border-radius: 4px;
+    /* Explicitly set padding if needed, overriding library default */
+    padding: 8px 12px; 
+}
+
+
+/* --- Edge Styles (Keep previous improvements) --- */
+
+/* Refined edge label style */
+.react-flow__edge-textbg {
+  fill: rgba(255, 255, 255, 0.6); /* Match JS setting */
+  rx: 3px; 
+  ry: 3px;
+}
+
+.react-flow__edge-text {
+  fill: #333;
+  font-size: 10px; /* Match JS setting */
+  font-weight: 500;
+}
+
+.react-flow__arrowhead path {
+  fill: #555; /* Match edge color from JS */
+  stroke: none;
+}

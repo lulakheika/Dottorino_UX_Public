@@ -1,0 +1,92 @@
+services:
+  backend:
+    container_name: BackEnd
+    build: ./BackEnd
+    volumes:
+      - type: bind
+        source: ./BackEnd
+        target: /app
+    ports:
+      - "8000:8000"
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload --log-level debug
+    networks:
+      - Dottorino_Net
+    environment:
+      # OpenAI Configuration
+      - OPENAI_API_KEY=
+      - MODEL_NAME=gpt-4o
+
+      # Trieve API Configuration
+      - TRIEVE_API_KEY=tr-1234567890
+      - TRIEVE_DATASET_ID=1cuyguyguyg
+      - TRIEVE_BASE_URL=https://api.trieve.ai/api
+      - TRIEVE_PAGE_SIZE=20
+
+  frontend:
+    container_name: FrontEnd
+    build:
+      context: ./FrontEnd
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: ./FrontEnd
+        target: /app
+        read_only: false
+        consistency: delegated
+      - type: volume
+        source: node_modules
+        target: /app/node_modules
+      - type: bind
+        source: ./Supbase/debug
+        target: /app/public/debug
+    ports:
+      - "3000:3000"
+    environment:
+      # Development Environment Configuration
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+      - NODE_ENV=development
+
+      # App Branding & UI Text
+      - REACT_APP_BRAND_NAME=Dottorino
+      - REACT_APP_WINDOW_TITLE=Polimedical360
+      - REACT_APP_INPUT_PLACEHOLDER=Scrivi un messaggio...
+      - REACT_APP_VOICE_BUTTON_TEXT=Chiamaci!
+      - REACT_APP_DEFAULT_BOT_MESSAGE=Ciao! Sono il tuo assistente medico. Come posso aiutarti oggi?
+      - REACT_APP_THINKING_MESSAGE=Cerco bene...
+
+      # Feature Configuration
+      - REACT_APP_ENABLE_SIDEBAR=true
+      - REACT_APP_AUTH_MODE=full
+
+      # Quick Actions
+      - REACT_APP_PROBLEM_BUTTON_TEXT=Ho un problema
+      - REACT_APP_BOOKING_BUTTON_TEXT=Prenota esame
+
+      # Supabase Configuration
+      - REACT_APP_SUPABASE_URL=http://localhost:8001
+      - REACT_APP_SUPABASE_ANON_KEY=
+      - REACT_APP_SUPABASE_SERVICE_KEY=
+      # Guest User Configuration
+      - REACT_APP_GUEST_USER_ID=3e49367b-71cf-4baa-9952-54eedf719be1
+      - REACT_APP_GUEST_USER_EMAIL=guest@dottorino.com
+      - REACT_APP_GUEST_USER_PASSWORD=12345678
+      # API Configuration (per comunicare con il backend)
+      - REACT_APP_API_BASE_URL=http://localhost:8000
+      - REACT_APP_API_TIMEOUT=30000
+      # Aggiungiamo la variabile d'ambiente per il page size
+      - REACT_APP_TRIEVE_PAGE_SIZE=20
+
+      # Configurazione per istanze multiple
+      - REACT_APP_INSTANCE_ID=""
+    networks:
+      - Dottorino_Net
+    command: >
+      sh -c "npm install && npm start"
+
+networks:
+  Dottorino_Net:
+    external: true
+
+volumes:
+  node_modules:

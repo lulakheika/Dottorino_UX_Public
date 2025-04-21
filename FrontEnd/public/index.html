@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#252333">
+  <title>Dottorino UX</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+    crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Script per iniettare le variabili d'ambiente -->
+  <script>
+    // Questo oggetto verrà popolato durante il runtime dall'applicazione React
+    window.env = {};
+  </script>
+
+  <style>
+    /* Risoluzione definitiva problema zona bianca in iOS */
+    html {
+      background-color: #252333;
+      /* Usa il colore di sfondo principale della tua app */
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+    }
+
+    body,
+    #root {
+      background-color: #252333;
+      /* Stesso colore dello sfondo app */
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: 0;
+      padding: 0;
+      overscroll-behavior: none;
+    }
+
+    /* Evita area bianca sotto */
+    @supports (-webkit-touch-callout: none) {
+
+      body,
+      #root {
+        height: -webkit-fill-available;
+      }
+
+      .ios-fill-fix {
+        min-height: -webkit-fill-available;
+        background-color: #252333;
+        /* Usa il colore di sfondo della tua app */
+      }
+    }
+
+    /* Fix per impedire scrollback automatico su iOS */
+    .chat-scroll {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: none;
+      touch-action: pan-y;
+      /* Padding extra per evitare che i messaggi finiscano sotto header/footer */
+      padding-top: env(safe-area-inset-top, 8px);
+      padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+
+    /* Spacer all'inizio e alla fine dell'area messaggi */
+    .chat-scroll::before,
+    .chat-scroll::after {
+      content: '';
+      display: block;
+      height: 12px;
+      width: 100%;
+    }
+
+    /* Lo spacer finale deve essere più grande */
+    .chat-scroll::after {
+      content: '';
+      display: block;
+      height: 40px;
+      width: 100%;
+    }
+
+    /* Elementi pseudo per far sì che lo scroll funzioni correttamente */
+    @supports (-webkit-touch-callout: none) {
+      .ios-scroll-fix {
+        content-visibility: auto;
+        contain-intrinsic-size: auto 1px;
+        padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
+      }
+    }
+
+    /* Previeni rimbalzo senza interrompere scrolling nei container */
+    body {
+      overflow: hidden;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Assicura che l'area di scrolling rispetti l'header */
+    @supports (-webkit-touch-callout: none) {
+      .chat-scroll {
+        padding-top: max(8px, env(safe-area-inset-top, 8px));
+      }
+    }
+
+    /* Fix per l'elasticità dello scrolling su iOS */
+    .chat-scroll {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: none;
+      /* Previene il rimbalzo */
+      touch-action: pan-y;
+    }
+
+    /* Classe per forzare il padding alla fine */
+    .ios-scroll-padding {
+      padding-bottom: 40px !important;
+    }
+
+    /* Fix per iPad e iPhone */
+    @supports (-webkit-touch-callout: none) {
+      .chat-scroll {
+        -webkit-transform: translateZ(0);
+        /* Attiva hardware acceleration */
+        padding-bottom: 40px;
+        /* Spazio extra */
+      }
+
+      /* Previeni che il browser tagli gli spazi alla fine */
+      .spacer-end {
+        height: 80px;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
+</html>

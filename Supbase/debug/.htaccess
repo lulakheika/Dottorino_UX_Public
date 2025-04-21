@@ -1,0 +1,3 @@
+# Consenti l'accesso a questa directory
+Options +Indexes
+Allow from all 

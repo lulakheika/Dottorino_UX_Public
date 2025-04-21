@@ -1,0 +1,16 @@
+# Ignore everything in node_modules except the package.json
+node_modules/*
+!node_modules/package.json
+
+# Ignore logs
+npm-debug.log
+yarn-error.log
+
+# Ignore build output
+build/
+
+# Ignore editor directories and files
+.vscode
+.idea
+*.sublime-workspace
+*.sublime-project 

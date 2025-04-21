@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Reindirizzamento allo strumento di debug...</title>
+    <script>
+        // Questo script cercherà di leggere la variabile d'ambiente dal window.env
+        // che verrà iniettato durante il runtime
+        window.onload = function () {
+            // Prova a ottenere l'URL di Supabase da window.env (se disponibile)
+            var apiBaseUrl = window.env && window.env.REACT_APP_API_BASE_URL
+                ? window.env.REACT_APP_API_BASE_URL
+                : 'http://localhost:8000';
+
+            // Estrai l'host e la porta dall'URL
+            var urlParts = apiBaseUrl.match(/^https?:\/\/([^:/]+)(:[0-9]+)?/);
+            var host = urlParts ? urlParts[1] : 'localhost';
+
+            // Costruisci l'URL completo per lo strumento di debug
+            // Usa la porta 3000 per il frontend
+            var debugUrl = 'http://' + host + ':3000/debug/index.html';
+
+            // Reindirizza
+            console.log('Reindirizzamento a:', debugUrl);
+            window.location.href = debugUrl;
+        }
+    </script>
+</head>
+
+<body>
+    <p>Reindirizzamento allo strumento di debug...</p>
+    <p>Se non vieni reindirizzato automaticamente, controlla la console per l'URL corretto.</p>
+
+    <div id="fallback" style="margin-top: 20px; display: none;">
+        <p>Fallback: <a id="fallbackLink" href="http://localhost:3000/debug/index.html">Apri lo strumento di debug</a>
+        </p>
+        <script>
+            // Aggiorna anche il link di fallback
+            var apiBaseUrl = window.env && window.env.REACT_APP_API_BASE_URL
+                ? window.env.REACT_APP_API_BASE_URL
+                : 'http://localhost:8000';
+
+            var urlParts = apiBaseUrl.match(/^https?:\/\/([^:/]+)(:[0-9]+)?/);
+            var host = urlParts ? urlParts[1] : 'localhost';
+            var debugUrl = 'http://' + host + ':3000/debug/index.html';
+
+            document.getElementById('fallbackLink').href = debugUrl;
+
+            // Mostra il fallback dopo 3 secondi se il reindirizzamento non funziona
+            setTimeout(function () {
+                document.getElementById('fallback').style.display = 'block';
+            }, 3000);
+        </script>
+    </div>
+</body>
+
+</html>
